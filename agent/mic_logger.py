@@ -7,7 +7,9 @@ import uuid
 from encryptor import encrypt_file
 
 def mic_logger():
-    os.makedirs("logs", exist_ok=True)
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    LOG_DIR = os.path.join(BASE_DIR, "logs")
+    os.makedirs(LOG_DIR, exist_ok=True)
     duration = 10
     sample_rate = 44100
 
@@ -16,7 +18,7 @@ def mic_logger():
             recording = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1)
             sd.wait()
             unique_id = uuid.uuid4().hex
-            filename = f"logs/{unique_id}.wav"
+            filename = os.path.join(LOG_DIR, f"{unique_id}.wav")
             write(filename, sample_rate, recording)
             encrypted_filename = f"{filename}.enc" # add encrypted file
             encrypt_file(filename, encrypted_filename) # encrypt function

