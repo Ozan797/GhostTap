@@ -1,12 +1,18 @@
+import os
 from cryptography.fernet import Fernet
 
-with open("secret.key", "rb") as file:
+# Dynamically resolve the absolute path to secret.key
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+KEY_PATH = os.path.join(BASE_DIR, "secret.key")
+
+with open(KEY_PATH, "rb") as file:
     key = file.read()
+
 fernet = Fernet(key)
 
 def decrypt_file(input_path, output_path):
     with open(input_path, "rb") as file:
-        data = file.read()
-    decrypted_data = fernet.decrypt(data)
-    with open(output_path, "wb") as f:
-        f.write(decrypted_data)
+        encrypted_data = file.read()
+    decrypted_data = fernet.decrypt(encrypted_data)
+    with open(output_path, "wb") as output_file:
+        output_file.write(decrypted_data)
